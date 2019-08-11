@@ -9,8 +9,8 @@ let productSchema = new mongoose.Schema({
 });
 
 let cartSchema = new mongoose.Schema({
-    product_id: String,
     clientID: String,
+    product: Object,
 });
 
 let orderSchema = new mongoose.Schema({
@@ -25,6 +25,7 @@ let orderSchema = new mongoose.Schema({
 let products = mongoose.model('products', productSchema);
 let cart = mongoose.model('cart', cartSchema);
 let order = mongoose.model('order', orderSchema);
+
 
 
 module.exports.cart = cart;

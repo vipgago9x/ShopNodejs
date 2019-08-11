@@ -68,9 +68,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     $('#<%= item._id%>1').fadeOut('slow', function(c) {
                                         $('#<%= item._id%>1').remove();
                                     });
-                                    var total = document.getElementById('total');
-
-                                    total.innerHTML = <%= item.price %>;
+                                    socket.on('changePrice', (data) => {
+                                        var total = document.getElementById('total');
+                                        var last_total = document.getElementById('last_total');
+                                        total.innerHTML = data + "VND";
+                                        last_total.innerHTML = data + "VND";
+                                    })
                                 });
                             });
                         </script>
@@ -78,12 +81,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <div class="close1" id="<%= item._id%>"> </div>
                             <div class="cart-sec simpleCart_shelfItem">
                                 <div class="cart-item cyc">
-                                    <img src="<%= item.image %>" class="img-responsive" alt="" />
+                                    <img src="<%= item.product[0].image %>" class="img-responsive" alt="" />
                                 </div>
                                 <div class="cart-item-info">
                                     <h3>
                                         <a href="#">
-                                            <%= item.name %>
+                                            <%= item.product[0].name %>
                                         </a><span>Model No: 3578</span></h3>
                                     <ul class="qty">
                                         <li>
@@ -94,7 +97,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                         </li>
                                         <li>
                                             <p>Price :
-                                                <%= item.price %>VND
+                                                <%= item.product[0].price %>VND
                                             </p>
                                         </li>
                                     </ul>

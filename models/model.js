@@ -6,6 +6,7 @@ let productSchema = new mongoose.Schema({
     category: String,
     price: Number,
     image: String,
+    sex: String,
 });
 
 let cartSchema = new mongoose.Schema({

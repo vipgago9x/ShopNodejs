@@ -4,9 +4,10 @@ let mongodb = require('mongodb');
 let model = require('../models/model');
 let Products = model.products;
 app.use(express.static(__dirname + '../public'));
-app.get('/:category/:page', (req, res) => {
+app.get('/:sex/:category/:page', (req, res) => {
     const perPage = 3;
     let page = req.params.page || 1;
+    let sex = req.params.sex;
     let change = {
         "bags": "Bags",
         "caps&hats": "Caps & Hats",
@@ -20,7 +21,7 @@ app.get('/:category/:page', (req, res) => {
     let category = req.params.category;
     let newCategory = change[category];
     console.log(newCategory);
-    Products.find((err, data) => {
+    Products.find({ sex: sex }, (err, data) => {
         let items = data.filter((item, index, data) => {
             console.log(item.category);
             if (item.category == newCategory) { return item };

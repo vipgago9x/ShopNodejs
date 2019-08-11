@@ -21,49 +21,4 @@ app.get('/', function(req, res, next) {
 });
 
 
-app.route('/add')
-    .get((req, res) => {
-        if (req.isAuthenticated()) {
-            res.render('add', { req: req });
-        } else {
-            res.redirect('/login');
-        }
-    })
-    .post((req, res) => {
-        let form = new formidable.IncomingForm();
-        form.uploadDir = './public/uploads/';
-        form.parse(req, (err, fields, files) => {
-            let path = files.files.path;
-            let newpath = form.uploadDir + files.files.name;
-            fs.rename(path, newpath, (err) => {
-                if (err) throw err;
-                console.log('doi ten thanh cong');
-            });
-            let image = 'uploads/' + files.files.name;
-            mongodb.connect('mongodb://localhost:27017', (err, client) => {
-                if (err) throw err;
-                let db = client.db('Shop');
-                let collection = db.collection('products');
-                let name = util.inspect(fields.name1),
-                    description = util.inspect(fields.description),
-                    category = util.inspect(fields.category),
-                    price = util.inspect(fields.price);
-                name = name.slice(1, name.length - 1);
-                description = description.slice(1, description.length - 1);
-                category = category.slice(1, category.length - 1);
-                price = price.slice(1, price.length - 1);
-                let data = {
-                    name: name,
-                    description: description,
-                    category: category,
-                    price: price,
-                    image: image,
-                }
-                collection.insertOne(data);
-                console.log('da luu product');
-            });
-        });
-        return res.redirect('/');
-    });
-
 module.exports = app;

@@ -10,6 +10,7 @@ let fbStrategy = require('passport-facebook').Strategy;
 let singleRouter = require('./single');
 let cartRouter = require('./cart');
 let orderRouter = require('./order');
+let addRouter = require('./add');
 /* GET users listing. */
 
 app.use(session({ secret: 'mysecret', cookie: { maxAge: 1000 * 60 * 60 } }));
@@ -20,6 +21,7 @@ app.use('/', indexRouter);
 app.use('/', singleRouter);
 app.use('/', cartRouter);
 app.use('/', orderRouter);
+app.use('/', addRouter);
 
 app.route('/register')
     .get((req, res) => { return res.render('register', { req: req }) })

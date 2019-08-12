@@ -89,7 +89,7 @@ Passport.use(new fbStrategy({
         clientID: '405807656955692',
         clientSecret: '986f4efce3d825bac471bfd226b52120',
         callbackURL: 'http://localhost:8000/login/fb/cb',
-        profileFields: ['email', 'gender', 'locale'],
+        profileFields: ['email'],
     },
     (accessToken, refreshToken, profile, done) => {
         console.log(profile);

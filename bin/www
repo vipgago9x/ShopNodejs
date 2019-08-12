@@ -96,16 +96,6 @@ io.on('connection', (socket) => {
             if (err) throw err;
             console.log('da xoa cart');
         }, 1);
-        Cart.find({ clientID: data.clientID }, (err, items) => {
-            if (err) throw err;
-            var price = 0;
-            if (items.length > 0) {
-                items.forEach((item) => {
-                    price += item.product[0].price;
-                });
-            }
-            socket.emit('changePrice', price);
-        })
     });
 
 });

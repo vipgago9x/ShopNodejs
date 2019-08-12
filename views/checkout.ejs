@@ -68,12 +68,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     $('#<%= item._id%>1').fadeOut('slow', function(c) {
                                         $('#<%= item._id%>1').remove();
                                     });
-                                    socket.on('changePrice', (data) => {
-                                        var total = document.getElementById('total');
-                                        var last_total = document.getElementById('last_total');
-                                        total.innerHTML = data + "VND";
-                                        last_total.innerHTML = data + "VND";
-                                    })
+                                    let total = document.getElementById('total');
+                                    let last_total = document.getElementById('last_total');
+                                    let previousPrice = total.innerHTML;
+                                    previousPrice = previousPrice.slice(0, previousPrice.length - 3);
+                                    let followingPrice = Number(previousPrice) - Number("<%= item.product[0].price%>");
+                                    total.innerHTML = followingPrice + "VND";
+                                    last_total.innerHTML = total.innerHTML;
                                 });
                             });
                         </script>

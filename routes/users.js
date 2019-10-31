@@ -1,9 +1,10 @@
 var express = require('express');
 var app = express();
+let models = require('../models/model');
+let user = models.user;
 let localStrategy = require('passport-local').Strategy;
 let Passport = require('passport');
 let session = require('express-session');
-let mongodb = require('mongodb');
 let indexRouter = require('./index');
 let productsRouter = require('./product');
 let fbStrategy = require('passport-facebook').Strategy;
@@ -11,6 +12,7 @@ let singleRouter = require('./single');
 let cartRouter = require('./cart');
 let orderRouter = require('./order');
 let addRouter = require('./add');
+let nodeMailer = require('nodemailer');
 /* GET users listing. */
 
 app.use(session({ secret: 'mysecret', cookie: { maxAge: 1000 * 60 * 60 } }));
@@ -40,22 +42,18 @@ app.route('/register')
             email: email,
             name: name,
         }
-        mongodb.connect('mongodb://localhost:27017', (err, client) => {
-            let db = client.db('Shop');
-            let collection = db.collection('user');
-            collection.find().toArray((err1, items) => {
-                let userRecord = items.find(user => user.usr == data.usr);
-                console.log(userRecord);
-                if (userRecord) {
-                    return res.redirect('/register');
-                } else {
-                    collection.insertOne(data);
-                    console.log('success');
-                    return res.redirect('/');
-                }
-            });
+        user.find((err, items) => {
+            let userRecord = items.find(user => user.usr == data.usr);
+            console.log(userRecord);
+            if (userRecord) {
+                return res.redirect('/register');
+            } else {
+                user.create(data);
+                return res.redirect('/');
+            }
         });
     });
+
 
 app.route('/login')
     .get((req, res) => { return res.render('login', { req: req }) })
@@ -63,20 +61,14 @@ app.route('/login')
 
 Passport.use(new localStrategy(
     (username, password, done) => {
-        mongodb.connect('mongodb://localhost:27017', (err, client) => {
+        user.find((err, items) => {
             if (err) throw err;
-            let db = client.db('Shop');
-            let collection = db.collection('user');
-            collection.find().toArray((err, items) => {
-                if (err) throw err;
-                let userRecord = items.find(user => user.usr == username);
-                if (userRecord && userRecord.pwd == password) {
-                    return done(null, userRecord);
-                } else {
-                    return done(null, false);
-                }
-            });
-            client.close();
+            let userRecord = items.find(user => user.usr == username);
+            if (userRecord && userRecord.pwd == password) {
+                return done(null, userRecord);
+            } else {
+                return done(null, false);
+            }
         });
     }
 ));
@@ -108,5 +100,6 @@ Passport.deserializeUser((username, done) => {
 app.get('/logout', (req, res) => {
     req.logOut();
     res.redirect('/');
-})
+});
+
 module.exports = app;

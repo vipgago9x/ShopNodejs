@@ -23,12 +23,21 @@ let orderSchema = new mongoose.Schema({
     time_order: Date,
     cart: Array,
 });
+
+let userSchema = new mongoose.Schema({
+    usr: String,
+    pwd: String,
+    email: String,
+    name: String,
+});
+
 let products = mongoose.model('products', productSchema);
 let cart = mongoose.model('cart', cartSchema);
 let order = mongoose.model('order', orderSchema);
-
+let user = mongoose.model('user', userSchema);
 
 
 module.exports.cart = cart;
 module.exports.products = products;
 module.exports.order = order;
+module.exports.user = user;

@@ -1,10 +1,5 @@
 var express = require('express');
 var app = express();
-let mongodb = require('mongodb');
-let formidable = require('formidable');
-let fs = require('fs');
-let bodyParser = require('body-parser');
-let util = require('util');
 let cookieParser = require('cookie-parser');
 /* GET home page. */
 app.use(cookieParser());

@@ -5,6 +5,14 @@ let Products = model.products;
 let util = require('util');
 let formidable = require('formidable');
 let fs = require('fs');
+let sql = require('mssql');
+let config = {
+    server: 'localhost',
+    database: 'TestImg',
+    user: 'zero',
+    password: 'hoakute9x',
+};
+
 
 app.route('/add')
     .get((req, res) => {
@@ -44,8 +52,11 @@ app.route('/add')
                 image: image,
                 sex: sex,
             }
-            Products.create(data);
-            console.log('saved a product');
+            let saveInfo = async ()=>{
+                let pool = await sql.connect(config);
+                await pool.request()
+                    .input('name',)
+            }
         });
         return res.redirect('/');
     });

@@ -61,6 +61,7 @@ app.route('/login')
 
 Passport.use(new localStrategy(
     (username, password, done) => {
+        console.log('hello');
         user.find((err, items) => {
             if (err) throw err;
             let userRecord = items.find(user => user.usr == username);
@@ -73,7 +74,7 @@ Passport.use(new localStrategy(
     }
 ));
 
-app.get('/login/fb', Passport.authenticate('facebook', { scope: ['email'] }));
+app.get('/login/fb', Passport.authenticate('facebook', { scope: ['email', 'username'] }));
 
 app.get('/login/fb/cb', Passport.authenticate('facebook', { failureRedirect: '/login', successRedirect: '/' }));
 
@@ -81,7 +82,7 @@ Passport.use(new fbStrategy({
         clientID: '405807656955692',
         clientSecret: '986f4efce3d825bac471bfd226b52120',
         callbackURL: 'http://localhost:8000/login/fb/cb',
-        profileFields: ['email'],
+        profileFields: ['email', 'username'],
     },
     (accessToken, refreshToken, profile, done) => {
         console.log(profile);

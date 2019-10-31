@@ -31,7 +31,7 @@ app.route('/order')
             if (err) throw err;
             console.log('da xoa thanh cong');
         });
-        return res.redirect('/');
+        return 0;
     });
 
 module.exports = app;
